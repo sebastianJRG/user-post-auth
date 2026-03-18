@@ -1,8 +1,8 @@
+import { Post } from "src/posts/entities/post.entity";
+
 export class User {
-    /* A REVISAR
-    id : string;
-    username : string;
-    password : string;
-    posts : string[];
-    */
+    id: string;
+    username: string;
+    password: string;
+    posts : Post[];
 }
