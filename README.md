@@ -34,6 +34,14 @@ $ npm install
 ## Compile and run the project
 
 ```bash
+# to build the database
+$ docker compose up -d
+
+# to shut down the database
+$ docker compose down
+```
+
+```bash
 # development
 $ npm run start
 
