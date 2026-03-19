@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { prisma } from 'src/prisma';
+import { Post } from './entities/post.entity';
 
 @Injectable()
-export class PostsService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+export class PostsService implements OnModuleInit {
+
+  async onModuleInit() {
+    await prisma.$connect();
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  async create(createPostDto: CreatePostDto) : Promise<Post> {
+    return await prisma.post.create({
+      data : createPostDto
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  async findAll() : Promise<Post[]> {
+    return await prisma.post.findMany();
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async findOne(postId: string) : Promise<Post | null> {
+    return await prisma.post.findFirst({
+      where : {id : postId}
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async update(postId : string, updatePostDto: UpdatePostDto) : Promise<Post> {
+    return await prisma.post.update({
+      where : {id : postId},
+      data : updatePostDto
+    });
+  }
+
+  async remove(postId : string) : Promise<Post> {
+    return prisma.post.delete({
+      where : {id : postId}
+    });
   }
 }
