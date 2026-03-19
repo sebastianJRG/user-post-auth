@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Put, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -10,72 +21,78 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
-    private readonly usersService : UsersService
+    private readonly usersService: UsersService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createPostDto: CreatePostDto) : Promise<Response> {
+  async create(@Body() createPostDto: CreatePostDto): Promise<Response> {
     const author = await this.usersService.findOne(createPostDto.authorId);
-    if (!author) throw new NotFoundException(`User not found with id : ${createPostDto.authorId}`);
+    if (!author)
+      throw new NotFoundException(
+        `User not found with id : ${createPostDto.authorId}`,
+      );
     const newPost = await this.postsService.create(createPostDto);
     return {
-      data : newPost,
-      error : null,
-      success : true
+      data: newPost,
+      error: null,
+      success: true,
     };
   }
 
   @Get()
-  async findAll() : Promise<Response> {
+  async findAll(): Promise<Response> {
     const allPosts = await this.postsService.findAll();
     return {
-      data : allPosts,
-      error : null,
-      success : true
+      data: allPosts,
+      error: null,
+      success: true,
     };
   }
 
   @Get('/author/:authorId')
-  async findByAuthot(@Param('authorId') authorId : string) : Promise<Response> {
+  async findByAuthot(@Param('authorId') authorId: string): Promise<Response> {
     const posts = await this.postsService.findByAuthor(authorId);
     return {
-      data : posts,
-      error : null,
-      success : true
+      data: posts,
+      error: null,
+      success: true,
     };
   }
 
   @Get(':id')
-  async findOne(@Param('id') postId: string) : Promise<Response> {
+  async findOne(@Param('id') postId: string): Promise<Response> {
     const post = await this.postsService.findOne(postId);
     if (!post) throw new NotFoundException(`post not found with id: ${postId}`);
     return {
-      data : post,
-      error : null,
-      success : true
+      data: post,
+      error: null,
+      success: true,
     };
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto) : Promise<Response> {
+  async update(
+    @Param('id') postId: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ): Promise<Response> {
     const updatePost = await this.postsService.update(postId, updatePostDto);
     return {
-      data : updatePost,
-      error : null,
-      success : true
+      data: updatePost,
+      error: null,
+      success: true,
     };
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id') postId: string) : Promise<Response> {
+  async remove(@Param('id') postId: string): Promise<Response> {
     const deletePost = await this.postsService.remove(postId);
     return {
-      data : deletePost,
-      error : null,
-      success : true
+      data: deletePost,
+      error: null,
+      success: true,
     };
   }
 }

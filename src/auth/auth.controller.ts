@@ -8,13 +8,15 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async signIn(@Body() userLogin : UserLogin) : Promise<Response> {
-    const result = await this.authService.singIn(userLogin.username, userLogin.password);
+  async signIn(@Body() userLogin: UserLogin): Promise<Response> {
+    const result = await this.authService.singIn(
+      userLogin.username,
+      userLogin.password,
+    );
     return {
-      data : {access_token : result.access_token},
-      error : null,
-      success : true
+      data: { access_token: result.access_token },
+      error: null,
+      success: true,
     };
   }
-
 }

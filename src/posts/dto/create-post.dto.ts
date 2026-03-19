@@ -1,12 +1,12 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class CreatePostDto {
-    @IsString()
-    authorId : string;
+  @IsString()
+  authorId: string;
 
-    @IsString()
-    title : string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    description: string;
+  @IsString()
+  description: string;
 }

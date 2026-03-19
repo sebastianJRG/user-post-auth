@@ -1,8 +1,8 @@
-import { Post } from "src/posts/entities/post.entity";
+import { Post } from 'src/posts/entities/post.entity';
 
 export class User {
-    id: string;
-    username: string;
-    password: string;
-    posts : Post[];
+  id: string;
+  username: string;
+  password: string;
+  posts: Post[];
 }

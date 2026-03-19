@@ -1,10 +1,10 @@
 import { IsString, Min, MinLength } from 'class-validator';
 
 export class CreateUserDto {
-    @IsString()
-    username : string;
+  @IsString()
+  username: string;
 
-    @IsString()
-    @MinLength(8)
-    password : string;
+  @IsString()
+  @MinLength(8)
+  password: string;
 }

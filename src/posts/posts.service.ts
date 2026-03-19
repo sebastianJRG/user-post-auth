@@ -6,43 +6,42 @@ import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostsService implements OnModuleInit {
-
   async onModuleInit() {
     await prisma.$connect();
   }
 
-  async create(createPostDto: CreatePostDto) : Promise<Post> {
+  async create(createPostDto: CreatePostDto): Promise<Post> {
     return await prisma.post.create({
-      data : createPostDto
+      data: createPostDto,
     });
   }
 
-  async findAll() : Promise<Post[]> {
+  async findAll(): Promise<Post[]> {
     return await prisma.post.findMany();
   }
 
-  async findOne(postId: string) : Promise<Post | null> {
+  async findOne(postId: string): Promise<Post | null> {
     return await prisma.post.findFirst({
-      where : {id : postId}
+      where: { id: postId },
     });
   }
 
-  async findByAuthor(authorId : string) : Promise<Post[]> {
+  async findByAuthor(authorId: string): Promise<Post[]> {
     return await prisma.post.findMany({
-      where : {authorId : authorId},
+      where: { authorId: authorId },
     });
   }
 
-  async update(postId : string, updatePostDto: UpdatePostDto) : Promise<Post> {
+  async update(postId: string, updatePostDto: UpdatePostDto): Promise<Post> {
     return await prisma.post.update({
-      where : {id : postId},
-      data : updatePostDto
+      where: { id: postId },
+      data: updatePostDto,
     });
   }
 
-  async remove(postId : string) : Promise<Post> {
+  async remove(postId: string): Promise<Post> {
     return prisma.post.delete({
-      where : {id : postId}
+      where: { id: postId },
     });
   }
 }
