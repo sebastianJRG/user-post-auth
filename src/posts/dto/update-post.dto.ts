@@ -1,6 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreatePostDto } from './create-post.dto';
-/*
-FALTA HACER QUE EL UPDATEPOSTDTO NO ACEPTE AUTHORID COMO CAMPO MODIFICABLE
-*/
-export class UpdatePostDto extends PartialType(CreatePostDto) {}
+
+export class UpdatePostDto extends PartialType(OmitType(CreatePostDto, ['authorId'] as const)) {}

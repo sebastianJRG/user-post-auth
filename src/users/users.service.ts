@@ -39,6 +39,13 @@ export class UsersService implements OnModuleInit {
     });
   }
 
+  async findByUsername(username : string) : Promise<User | null> {
+    return await prisma.user.findFirst({
+      where : {username : username},
+      include : {posts: true}
+    });
+  }
+
   async update(userId: string, updateUserDto: UpdateUserDto) : Promise<User> {
     if (updateUserDto.password && process.env.BCRYPT) {
       const newHashPass = await bcrypt.hash(updateUserDto.password, Number(process.env.BCRYPT));

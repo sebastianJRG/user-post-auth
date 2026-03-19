@@ -27,6 +27,12 @@ export class PostsService implements OnModuleInit {
     });
   }
 
+  async findByAuthor(authorId : string) : Promise<Post[]> {
+    return await prisma.post.findMany({
+      where : {authorId : authorId},
+    });
+  }
+
   async update(postId : string, updatePostDto: UpdatePostDto) : Promise<Post> {
     return await prisma.post.update({
       where : {id : postId},

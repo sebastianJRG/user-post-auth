@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Put, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { UsersService } from 'src/users/users.service';
 import { Response } from 'src/response/response.interface';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -12,6 +13,7 @@ export class PostsController {
     private readonly usersService : UsersService
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createPostDto: CreatePostDto) : Promise<Response> {
     const author = await this.usersService.findOne(createPostDto.authorId);
@@ -34,6 +36,16 @@ export class PostsController {
     };
   }
 
+  @Get('/author/:authorId')
+  async findByAuthot(@Param('authorId') authorId : string) : Promise<Response> {
+    const posts = await this.postsService.findByAuthor(authorId);
+    return {
+      data : posts,
+      error : null,
+      success : true
+    };
+  }
+
   @Get(':id')
   async findOne(@Param('id') postId: string) : Promise<Response> {
     const post = await this.postsService.findOne(postId);
@@ -45,6 +57,7 @@ export class PostsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(@Param('id') postId: string, @Body() updatePostDto: UpdatePostDto) : Promise<Response> {
     const updatePost = await this.postsService.update(postId, updatePostDto);
@@ -55,6 +68,7 @@ export class PostsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') postId: string) : Promise<Response> {
     const deletePost = await this.postsService.remove(postId);
