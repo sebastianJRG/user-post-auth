@@ -15,6 +15,24 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+    
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/userpostauth?schema=public"
+      BCRYPT: 10
+      PORT: 3000
+    
+    depends_on:
+      - db
 
 volumes:
   postgres_data:
